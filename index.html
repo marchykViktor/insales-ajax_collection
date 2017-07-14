@@ -1,0 +1,67 @@
+<html>
+<head>
+<title>.</title>
+<script
+        src="https://code.jquery.com/jquery-3.2.1.js"
+        integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+        crossorigin="anonymous"></script>
+        <script
+        src="./InSales.ajax_collection.js"
+        ></script>
+</head>
+<body>
+
+<select class="js-ajax_collection-page_size1">
+  {{ "40"  | select_option: page_size, "40" }}
+  {{ "80"  | select_option: page_size, "80" }}
+  {{ "100"  | select_option: page_size, "100" }}
+</select>  
+
+Сортировать: <span class="js-ajax_collection-page_sort1" data-ajax-sort="price">По цене</span>
+
+<div class="container js-ajax_collection-container1">
+  {% for product in products %}
+    {% include 'product-preview' %}
+  {% endfor %}
+</div>
+
+{% if paginate.pages > 1 %}
+    <ul class="pagination pagination-table js-ajax_collection-pagination_container1">
+    Страницы:
+      {% if paginate.previous %}
+       <li class="js-ajax_collection-pagination1" data-pagination-number="prev"><a class="prev" href="javascript:void(0)"><span>‹</span></a></li>
+      {% else %}
+         <li class="js-ajax_collection-pagination1" data-pagination-number="none"><a class="prev" href="javascript:void(0)"><span class="non-active">‹</span></a></li>
+      {% endif %}                
+      {% for part in paginate.parts %}
+        {% if part.is_link %}
+          <li class="js-ajax_collection-pagination1" data-pagination-number="{{ part.title }}"><a href="javascript:void(0)">{{ part.title }}</a></li>
+        {% else %}
+          <li class="js-ajax_collection-pagination1" data-pagination-number="{{ part.title }}"><a href="javascript:void(0)" class="active">{{ part.title }}</a></li>
+        {% endif %}
+      {% endfor %}
+      {% if paginate.next %}
+        <li class="js-ajax_collection-pagination1" data-pagination-number="next" ><a class="next" href="javascript:void(0)"><span>›</span></a></li>
+      {% else %}
+          <li class="js-ajax_collection-pagination1" data-pagination-number="none"><a class="next" href="javascript:void(0)"><span class="non-active">›</span></a></li>
+      {% endif %}        
+    </ul>
+{% else %}
+    <ul class="pagination pagination-table js-ajax_collection-pagination_container1"></ul>
+{% endif %}
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    var options = {
+        collectionContainer: '.js-ajax_collection-container1',
+        paginationContainer: '.js-ajax_collection-pagination_container1',
+        paginationSelector: '.js-ajax_collection-pagination1',
+        pageSortSelector: '.js-ajax_collection-page_sort1',
+        pageSizeSelector: '.js-ajax_collection-page_size1',
+        preloaderSelector: '.js-ajax_collection-preloader1',
+    }
+    var abc = new InSales.ajaxCollection(options);
+  });
+</script>
+</body>
+</html>
